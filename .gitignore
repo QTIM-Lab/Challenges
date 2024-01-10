@@ -1,0 +1,12 @@
+# IVIM
+IVIM/input_data
+IVIM/reference_data
+IVIM/public_data
+
+
+# npys
+*.npy
+*.zip
+
+
+__pycache__

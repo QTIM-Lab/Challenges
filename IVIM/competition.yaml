@@ -1,0 +1,74 @@
+version: '2'
+title: IVIM
+docker_image: codalab/codalab-legacy:py37
+queue: null
+description: IVIM Description
+registration_auto_approve: true
+enable_detailed_results: false
+image: logo.jpg
+terms: terms.md
+
+pages:
+- title: data
+  file: data.md
+- title: evaluation
+  file: evaluation.md
+- title: overview
+  file: overview.md
+
+tasks:
+- index: 0
+  name: First Task
+  description: null
+  is_public: false
+  input_data: input_data
+  reference_data: reference_data
+  scoring_program: scoring_program
+  ingestion_program: ingestion_program
+- index: 1
+  name: Second Task
+  description: null
+  is_public: false
+  reference_data: reference_data
+  scoring_program: scoring_program
+
+solutions: []
+
+phases:
+- index: 0
+  name: Template First Phase
+  description: Template First Phase
+  start: '2023-10-31'
+  end: '2023-11-30'
+  max_submissions_per_day: 5
+  max_submissions: 100
+  execution_time_limit: 600
+  auto_migrate_to_this_phase: false
+  hide_output: false
+  tasks:
+  - 0
+  solutions: []
+- index: 1
+  name: Template Second Phase
+  description: Template Second Phase
+  start: '2023-12-01'
+  end: '2024-02-25'
+  max_submissions_per_day: 5
+  max_submissions: 100
+  execution_time_limit: 600
+  auto_migrate_to_this_phase: false
+  hide_output: false
+  tasks:
+  - 1
+  solutions: []
+leaderboards:
+- index: 0
+  title: Results
+  key: main
+  hidden: false
+  columns:
+  - title: Correct
+    key: correct
+    index: 0
+    sorting: desc
+    hidden: false
