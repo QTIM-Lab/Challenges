@@ -68,7 +68,7 @@ docker run \
     -e input=input \
     -e output=output \
     -e program=program \
-    -v "/home/bearceb/Documents/IVIM/ivim_bundle/submission_directory":"/app" \
+    -v "/sddata/projects/Challenges/IVIM/submission_directory":"/app" \
     -w "/app" \
     codalab/codalab-legacy:py37BB $command
 
