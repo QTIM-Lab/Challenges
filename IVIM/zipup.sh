@@ -1,15 +1,73 @@
 # Competition
-# 
+
+## Files needed
+### Organizer files
+# *_gtDWIs.npy - raw ground truth image...not used
+# *_IVIMParam.npy - actual ground truth
+# *_TissueType.npy - Tissue types used with noisy kspace image
+### User files
+# *_NoisyDWIK.npy - noisy k-space image given to participants
+
+## Moving data to and from /sddata/data/Challenges 
+### Clear current working area
+# rm /sddata/projects/Challenges/IVIM/reference_data/training/*
+# rm /sddata/projects/Challenges/IVIM/reference_data/validation/*
+# rm /sddata/projects/Challenges/IVIM/reference_data/testing/*
+# rm /sddata/projects/Challenges/IVIM/public_data/training/*
+# rm /sddata/projects/Challenges/IVIM/public_data/validation/*
+# rm /sddata/projects/Challenges/IVIM/public_data/testing/*
+
+### From /sddata/data
+#### Training
+cp -r /sddata/data/Challenges/IVIM/phase_data/train/*_IVIMParam.npy /sddata/projects/Challenges/IVIM/reference_data/training/
+cp -r /sddata/data/Challenges/IVIM/phase_data/train/*_TissueType.npy /sddata/projects/Challenges/IVIM/reference_data/training/
+
+cp -r /sddata/data/Challenges/IVIM/phase_data/train/*_gtDWIs.npy /sddata/projects/Challenges/IVIM/public_data/training/
+cp -r /sddata/data/Challenges/IVIM/phase_data/train/*_IVIMParam.npy /sddata/projects/Challenges/IVIM/public_data/training/
+cp -r /sddata/data/Challenges/IVIM/phase_data/train/*_TissueType.npy /sddata/projects/Challenges/IVIM/public_data/training/
+cp -r /sddata/data/Challenges/IVIM/phase_data/train/*_NoisyDWIk.npy /sddata/projects/Challenges/IVIM/public_data/training/
+
+#### Validation
+cp -r /sddata/data/Challenges/IVIM/phase_data/validate/organizer/*_IVIMParam.npy /sddata/projects/Challenges/IVIM/reference_data/validation/
+cp -r /sddata/data/Challenges/IVIM/phase_data/validate/organizer/*_TissueType.npy /sddata/projects/Challenges/IVIM/reference_data/validation/
+
+cp -r /sddata/data/Challenges/IVIM/phase_data/validate/user/*_NoisyDWIk.npy /sddata/projects/Challenges/IVIM/public_data/validation/
+
+#### Testing
+cp -r /sddata/data/Challenges/IVIM/phase_data/test/organizer/*_IVIMParam.npy /sddata/projects/Challenges/IVIM/reference_data/testing/
+cp -r /sddata/data/Challenges/IVIM/phase_data/test/organizer/*_TissueType.npy /sddata/projects/Challenges/IVIM/reference_data/testing/
+
+cp -r /sddata/data/Challenges/IVIM/phase_data/test/user/*_NoisyDWIk.npy /sddata/projects/Challenges/IVIM/public_data/testing/
+
+
+### From /sddata/projects
+# cp -r /sddata/projects/Challenges/IVIM/reference_data/training/*_gtDWIs.npy /sddata/data/Challenges/IVIM/phase_data/train/
+# cp -r /sddata/projects/Challenges/IVIM/reference_data/training/*_IVIMParam.npy /sddata/data/Challenges/IVIM/phase_data/train/
+# cp -r /sddata/projects/Challenges/IVIM/reference_data/training/*_TissueType.npy /sddata/data/Challenges/IVIM/phase_data/train/
+# cp -r /sddata/projects/Challenges/IVIM/reference_data/training/*_NoisyDWIk.npy /sddata/data/Challenges/IVIM/phase_data/train/
+
+# cp -r /sddata/projects/Challenges/IVIM/reference_data/validate/organizer/*_gtDWIs.npy /sddata/data/Challenges/IVIM/phase_data/train/organizer/
+# cp -r /sddata/projects/Challenges/IVIM/reference_data/validate/organizer/*_IVIMParam.npy /sddata/data/Challenges/IVIM/phase_data/train/organizer/
+# cp -r /sddata/projects/Challenges/IVIM/reference_data/validate/organizer/*_TissueType.npy /sddata/data/Challenges/IVIM/phase_data/train/organizer/
+# cp -r /sddata/projects/Challenges/IVIM/reference_data/validate/user/*_NoisyDWIk.npy /sddata/data/Challenges/IVIM/phase_data/train/user/
+
+# cp -r /sddata/projects/Challenges/IVIM/reference_data/test/organizer/*_gtDWIs.npy /sddata/data/Challenges/IVIM/phase_data/train/organizer/
+# cp -r /sddata/projects/Challenges/IVIM/reference_data/test/organizer/*_IVIMParam.npy /sddata/data/Challenges/IVIM/phase_data/train/organizer/
+# cp -r /sddata/projects/Challenges/IVIM/reference_data/test/organizer/*_TissueType.npy /sddata/data/Challenges/IVIM/phase_data/train/organizer/
+# cp -r /sddata/projects/Challenges/IVIM/reference_data/test/user/*_NoisyDWIk.npy /sddata/data/Challenges/IVIM/phase_data/train/user/
+
+## Starting Kit
+zip -j starting_kit.zip starting_kit/*
 
 ## reference data
-zip -j reference_training_data.zip reference_data/training/*_IVIMParam.npy
-zip -j reference_training_data.zip reference_data/training/*_TissueType.npy
+### training
+zip -j reference_training_data.zip reference_data/training/*
 
-zip -j reference_validation_data.zip reference_data/validation/organizer/*_IVIMParam.npy
-zip -j reference_validation_data.zip reference_data/validation/organizer/*_TissueType.npy
+### validation
+zip -j reference_validation_data.zip reference_data/validation/*
 
-zip -j reference_testing_data.zip reference_data/testing/organizer/*_IVIMParam.npy
-zip -j reference_testing_data.zip reference_data/testing/organizer/*_TissueType.npy
+### testing
+zip -j reference_testing_data.zip reference_data/testing/*
 
 ## public data
 zip -j public_training_data.zip public_data/training/*
@@ -38,12 +96,11 @@ zip -j ivim_challenge_bundle_folders.zip \
 
 
 # Sample training submission
-
-cd sample_submission;
-zip -r sample_submission.zip ./*;
-cp sample_submission.zip ../;
+ls sample_submission
+rm ./sample_submission/*
+cp /sddata/data/Challenges/IVIM/phase_data/train/*_IVIMParam.npy ./sample_submission/
+zip -j sample_submission.zip ./sample_submission/*;
 rm sample_submission.zip
-cd ../
 
 # Sample Run
 
