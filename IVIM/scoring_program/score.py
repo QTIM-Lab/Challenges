@@ -29,8 +29,9 @@ def main():
     # Read in Participant Submissions for a little QA
     # And to get stubs for their case file names
     ### ALSO a file called metadata is dropped in input/input/res...filter it out
-    cases = os.listdir(os.path.join(submit_dir))
-    cases = [file for file in cases if file != 'metadata']
+
+    cases = os.listdir(os.path.join(truth_dir))
+    cases = [file for file in cases if file != 'metadata' and file.find("_IVIMParam") != -1]
     # pdb.set_trace()
     # case_number = [int(casesdata[i][:4]) for i in range(0, len(cases))]
     case_stubs = [cases[i][4:] for i in range(0, len(cases))]    
@@ -48,7 +49,7 @@ def main():
     fname_ivim_gt ='_IVIMParam.npy'
     fname_tissue ='_TissueType.npy'
     fname_fit = submissions_stub # from above
-    num_cases = 10 # SUBJECT TO CHANGE - Should be dynamic
+    num_cases = len(cases)
     Nx = 200
     Ny = 200
 
@@ -65,7 +66,7 @@ def main():
     rRMSE_t_case =np.empty([num_cases])
 
     for i in range(num_cases):
-        
+        print(i)
         # load gt data
         x = read_data(truth_dir, fname_ivim_gt, i+1)
         
