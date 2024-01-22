@@ -1,0 +1,112 @@
+version: '2'
+title: CT Metal Artifact Reduction (CT-MAR)
+docker_image: codalab/codalab-legacy:py37
+queue: null
+description: The American Association of Physicists in Medicine (AAPM) is sponsoring
+  the CT Metal Artifact Reduction (CT-MAR) Challenge leading up to the 2024 AAPM Annual
+  Meeting & Exhibition. We will invite participants to develop a 2D metal artifact
+  reduction (MAR) algorithm. Both deep learning (DL) and non-DL approaches are welcome.
+  Solutions can operate in the image-domain, in the sinogram-domain, or in a combination
+  of both. A large set of image pairs and sinogram pairs will be provided for training
+  and testing as well as a smaller dataset for scoring. The final score will be computed
+  as a weighted average of dozens of clinically focused image quality metrics. The
+  challenge organizers will summarize the challenge results in a journal publication.
+  Please note, the two top-performing teams will be awarded complimentary meeting
+  registration to present on their methodologies during the 2024 AAPM Annual Meeting
+  & Exhibition in Los Angeles, CA from July 21-25, 2024 (in-person attendance is required).
+registration_auto_approve: true
+enable_detailed_results: true
+image: CT-MARLogo.png
+terms: terms.md
+pages:
+- title: Overview
+  file: overview.md
+- title: Objective
+  file: objective.md
+- title: How The Challenge Works
+  file: how-the-challenge-works.md
+- title: Challenge Data
+  file: challenge-data.md
+- title: Scoring Metrics
+  file: scoring-metrics.md
+- title: Get Started
+  file: get-started.md
+- title: Important Dates
+  file: important-dates.md
+- title: Results, Prizes and Publication Plan
+  file: results-prizes-and-publication-plan.md
+- title: Organizers
+  file: organizers.md
+tasks:
+- index: 0
+  name: First Task
+  description: null
+  is_public: false
+  input_data: input_data.zip
+  reference_data: reference_data.zip
+  scoring_program: scoring_program.zip
+- index: 1
+  name: Second Task
+  description: null
+  is_public: false
+  reference_data: reference_data.zip
+  scoring_program: scoring_program.zip
+- index: 2
+  name: final submission
+  description: Participants submit their processed final scoring datasets (corrected images with metal).
+  is_public: false
+  reference_data: reference_data.zip
+  scoring_program: scoring_program.zip
+solutions: []
+phases:
+- index: 0
+  name: Phase 1 (Training & Development)
+  description: Template First Phase
+  start: '2023-10-30'
+  end: '2024-02-18'
+  max_submissions_per_day: 5
+  max_submissions: 100
+  execution_time_limit: 600
+  auto_migrate_to_this_phase: false
+  hide_output: false
+  tasks:
+  - 0
+  solutions: []
+- index: 1
+  name: Phase 2 (Feedback and Refinement)
+  description: Template Second Phase
+  start: '2024-02-19'
+  end: '2024-05-05'
+  max_submissions_per_day: 5
+  max_submissions: 100
+  execution_time_limit: 600
+  auto_migrate_to_this_phase: false
+  hide_output: false
+  tasks:
+  - 1
+  solutions: []
+- index: 2
+  name: Phase 3 (Final scoring)
+  description: Participants submit their processed results on the final scoring datasets
+    (corrected image with metal).
+  start: '2024-05-06'
+  end: '2024-05-20'
+  max_submissions_per_day: 5
+  max_submissions: 100
+  execution_time_limit: 600
+  auto_migrate_to_this_phase: false
+  hide_output: false
+  tasks:
+  - 2
+  solutions: []
+leaderboards:
+- index: 0
+  title: Results
+  key: main
+  hidden: false
+  columns:
+  - title: Correct
+    key: correct
+    index: 0
+    sorting: desc
+    hidden: false
