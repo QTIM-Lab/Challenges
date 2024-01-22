@@ -1,9 +1,9 @@
 # Ground Truths
+cp -r /sddata/projects/Challenges/CT-MAR/reference_data /sddata/data/Challenges/CT-MAR/
 zip -j reference_data.zip reference_data/*
 
 # Public Data
-zip -j public_data_training.zip public_data_training/*
-zip -j public_data_validation.zip public_data_validation/*
+zip -j public_data.zip public_data/*
 
 # Scoring Program
 zip -j scoring_program.zip scoring_program/*
@@ -32,7 +32,7 @@ zip -j ct_mar_challenge_bundle.zip \
   scoring_program.zip
 
 # [5] Sample training submission
-
+cp -r /sddata/projects/Challenges/CT-MAR/sample_submission /sddata/data/Challenges/CT-MAR/
 cd sample_submission;
 zip -r sample_submission.zip ./*;
 cp sample_submission.zip ../;

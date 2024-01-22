@@ -1,12 +1,18 @@
-# IVIM
+# IVIM, delete when dormant
 IVIM/input_data
 IVIM/reference_data
 IVIM/public_data
+
+# CT-MAR, delete when dormant
+CT-MAR/input_data
+CT-MAR/reference_data
+CT-MAR/public_data
+CT-MAR/sample_submission
 
 
 # npys
 *.npy
 *.zip
-
+*.jpg
 
 __pycache__
