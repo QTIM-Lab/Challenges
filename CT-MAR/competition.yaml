@@ -42,21 +42,22 @@ tasks:
   name: First Task
   description: null
   is_public: false
-  input_data: input_data.zip
-  reference_data: reference_data.zip
-  scoring_program: scoring_program.zip
+  public_data: public_val_data.zip
+  reference_data: reference_val_data.zip
+  scoring_program: val_scoring_program.zip
+  starting_kit: train_starting_kit.zip
 - index: 1
   name: Second Task
   description: null
   is_public: false
-  reference_data: reference_data.zip
-  scoring_program: scoring_program.zip
+  reference_data: reference_val_data.zip
+  scoring_program: val_scoring_program.zip
 - index: 2
-  name: final submission
+  name: Third Task
   description: Participants submit their processed final scoring datasets (corrected images with metal).
   is_public: false
-  reference_data: reference_data.zip
-  scoring_program: scoring_program.zip
+  reference_data: reference_val_data.zip
+  scoring_program: val_scoring_program.zip
 solutions: []
 phases:
 - index: 0

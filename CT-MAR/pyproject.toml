@@ -1,0 +1,17 @@
+[tool.poetry]
+name = "nils-benchmark-code-v1"
+version = "0.1.0"
+description = ""
+authors = ["Benjamin Bearce <bbearce@gmail.com>"]
+readme = "README.md"
+
+[tool.poetry.dependencies]
+python = "^3.10"
+scikit-image = "^0.22.0"
+numpy = "^1.26.4"
+scikit-learn = "^1.4.1.post1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
