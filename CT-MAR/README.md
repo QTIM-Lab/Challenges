@@ -121,6 +121,7 @@ cp $DATA/sample_val_submission.zip $ROOT/
 cp $DATA/public_val_data.zip $ROOT/
 
 zip -j ct_mar_challenge_bundle.zip \
+  README.md \
   competition.yaml \
   challenge-data.md \
   get-started.md \
