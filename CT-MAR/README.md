@@ -31,15 +31,12 @@ Retrieve from `$DATA`.
 # Which phase
 PHASE=val
 # Extract raw data
-unzip $DATA/reference_"$PHASE"_data.zip -d $DATA/reference_"$PHASE"_data
-# Copy to submission_dir ref area
-rm -r $ROOT/submission_directory/input/ref/!(.gitkeep) # leave .gitkeep so we can keep this in git
-cp -r $DATA/reference_"$PHASE"_data/* $ROOT/submission_directory/input/ref/
+unzip $DATA/reference_"$PHASE"_data.zip -d $ROOT/submission_directory/input/ref
 # Re-compress
-cd $DATA/reference_"$PHASE"_data
-zip -r reference_"$PHASE"_data.zip ./*; mv reference_"$PHASE"_data.zip $DATA/; cd $ROOT
-# Clean up
-rm -r $DATA/reference_"$PHASE"_data/
+cd $ROOT/submission_directory/input/ref
+zip -r reference_"$PHASE"_data.zip ./*; mv reference_"$PHASE"_data.zip $DATA/;
+cd $ROOT
+# To clean
 rm -r $ROOT/submission_directory/input/ref/!(.gitkeep) # leave .gitkeep so we can keep this in git
 ```
 
@@ -63,15 +60,13 @@ Retrieve from `$DATA`.
 # Which phase
 PHASE=val
 # Extract raw data
-unzip $DATA/"$PHASE"_scoring_program.zip -d $DATA/"$PHASE"_scoring_program
-# Copy to submission_dir res area
-rm -r $ROOT/submission_directory/program/!(.gitkeep) # leave .gitkeep so we can keep this in git
-cp -r $DATA/"$PHASE"_scoring_program/* $ROOT/submission_directory/program/
+unzip $DATA/"$PHASE"_scoring_program.zip -d $ROOT/submission_directory/program/
+this in git
 # Re-compress
-cd $DATA/"$PHASE"_scoring_program
-zip -r "$PHASE"_scoring_program.zip ./*; mv "$PHASE"_scoring_program.zip $DATA/; cd $ROOT
+cd $ROOT/submission_directory/program
+zip -r "$PHASE"_scoring_program.zip ./*; mv "$PHASE"_scoring_program.zip $DATA/;
+cd $ROOT
 # Clean up
-rm -r $DATA/"$PHASE"_scoring_program/
 rm -r $ROOT/submission_directory/program/!(.gitkeep) # leave .gitkeep so we can keep this in git
 ```
 
@@ -95,15 +90,12 @@ Retrieve from `$DATA`.
 # Which phase
 PHASE=val
 # Extract raw data
-unzip $DATA/sample_"$PHASE"_submission.zip -d $DATA/sample_"$PHASE"_submission
-# Copy to submission_dir res area
-rm -r $ROOT/submission_directory/input/res/!(.gitkeep) # leave .gitkeep so we can keep this in git
-cp -r $DATA/sample_"$PHASE"_submission/* $ROOT/submission_directory/input/res/
+unzip $DATA/sample_"$PHASE"_submission.zip -d $ROOT/submission_directory/input/res/
 # Re-compress
-cd $DATA/sample_"$PHASE"_submission
-zip -r sample_"$PHASE"_submission.zip ./*; mv sample_"$PHASE"_submission.zip $DATA/; cd $ROOT
+cd $ROOT/submission_directory/input/res/
+zip -r sample_"$PHASE"_submission.zip ./*; mv sample_"$PHASE"_submission.zip $DATA/; 
+cd $ROOT
 # Clean up
-rm -r $DATA/sample_"$PHASE"_submission/
 rm -r $ROOT/submission_directory/input/res/!(.gitkeep) # leave .gitkeep so we can keep this in git
 ```
 
@@ -188,7 +180,7 @@ python $program/score.py $input $output
 ### Docker
 ```bash
 PHASE=val
-cd $DATA/"$PHASE"_scoring_program;
+cd $ROOT/submission_directory/program/
 docker build -t bbearce/codalab-legacy:ct-mar .;
 docker push bbearce/codalab-legacy:ct-mar
 
