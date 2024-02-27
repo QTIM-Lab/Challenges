@@ -28,6 +28,9 @@ This is the structure the compute worker sees while running and the universe you
 ## Ground Truth
 Retrieve from `$DATA`.
 ```bash
+ROOT=/sddata/projects/Challenges/CT-MAR
+cd $ROOT
+DATA=/sddata/data/Challenges/CT-MAR
 # Which phase
 PHASE=val
 # Extract raw data
@@ -57,11 +60,13 @@ rm -r $DATA/public_"$PHASE"_data/
 ## Scoring Program
 Retrieve from `$DATA`.
 ```bash
+ROOT=/sddata/projects/Challenges/CT-MAR
+cd $ROOT
+DATA=/sddata/data/Challenges/CT-MAR
 # Which phase
 PHASE=val
 # Extract raw data
 unzip $DATA/"$PHASE"_scoring_program.zip -d $ROOT/submission_directory/program/
-this in git
 # Re-compress
 cd $ROOT/submission_directory/program
 zip -r "$PHASE"_scoring_program.zip ./*; mv "$PHASE"_scoring_program.zip $DATA/;
@@ -73,6 +78,9 @@ rm -r $ROOT/submission_directory/program/!(.gitkeep) # leave .gitkeep so we can 
 ## Starting Kit
 Retrieve from `$DATA`.
 ```bash
+ROOT=/sddata/projects/Challenges/CT-MAR
+cd $ROOT
+DATA=/sddata/data/Challenges/CT-MAR
 # Which phase
 PHASE=train
 # Extract raw data
@@ -112,6 +120,8 @@ cp $DATA/val_scoring_program.zip $ROOT/
 cp $DATA/sample_val_submission.zip $ROOT/
 cp $DATA/public_val_data.zip $ROOT/
 
+cd $ROOT
+rm ct_mar_challenge_bundle.zip
 zip -j ct_mar_challenge_bundle.zip \
   README.md \
   competition.yaml \
@@ -163,13 +173,17 @@ poetry config virtualenvs.in-project false
 
 Install from `pyproject.toml`:
 ```bash
-pyenv activate CT-MAR
+pyenv activate ct-mar
 poetry install
 ```
 
 
 ### Python
 ```bash
+ROOT=/sddata/projects/Challenges/CT-MAR
+cd $ROOT
+DATA=/sddata/data/Challenges/CT-MAR
+
 input=submission_directory/input
 output=submission_directory/output
 program=submission_directory/program
