@@ -15,4 +15,8 @@ CT-MAR/sample_submission
 *.zip
 *.jpg
 
+# vscode
+*.code-workspace
+
+# python
 __pycache__
