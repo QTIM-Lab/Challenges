@@ -18,28 +18,35 @@ pages:
 
 tasks:
 - index: 0
-  name: First Task
+  name: Train Task
   description: null
-  is_public: false
-  input_data: input_data
-  reference_data: reference_data
-  scoring_program: scoring_program
-  ingestion_program: ingestion_program
+  is_public: true
+  public_data: public_train_data.zip
+  reference_data: reference_train_data.zip
+  scoring_program: scoring_val_program.zip
 - index: 1
-  name: Second Task
+  name: Validation Task
   description: null
-  is_public: false
-  reference_data: reference_data
-  scoring_program: scoring_program
+  is_public: true
+  public_data: public_val_data.zip
+  reference_data: reference_val_data.zip
+  scoring_program: scoring_val_program.zip
+- index: 2
+  name: Test Task
+  description: null
+  is_public: true
+  public_data: public_test_data.zip
+  reference_data: reference_test_data.zip
+  scoring_program: scoring_val_program.zip
 
 solutions: []
 
 phases:
 - index: 0
-  name: Template First Phase
-  description: Template First Phase
-  start: '2023-10-31'
-  end: '2023-11-30'
+  name: Training
+  description: Registration opens. Training dataset and script are made available.
+  start: '2024-01-14'
+  end: '2024-02-14'
   max_submissions_per_day: 5
   max_submissions: 100
   execution_time_limit: 600
@@ -49,10 +56,10 @@ phases:
   - 0
   solutions: []
 - index: 1
-  name: Template Second Phase
-  description: Template Second Phase
-  start: '2023-12-01'
-  end: '2024-02-25'
+  name: Validation
+  description: Validation datasets are made available. Participants can submit preliminary results and receive feedback on relative scoring for unlimited number of times.
+  start: '2024-02-14'
+  end: '2024-05-14'
   max_submissions_per_day: 5
   max_submissions: 100
   execution_time_limit: 600
@@ -61,14 +68,34 @@ phases:
   tasks:
   - 1
   solutions: []
+- index: 2
+  name: Testing
+  description: Final test datasets are made available.
+  start: '2024-02-14'
+  end: '2024-05-14'
+  max_submissions_per_day: 3
+  max_submissions: 3
+  execution_time_limit: 600
+  auto_migrate_to_this_phase: false
+  hide_output: false
+  tasks:
+  - 2
+  solutions: []
+
+
 leaderboards:
 - index: 0
   title: Results
   key: main
   hidden: false
   columns:
-  - title: Correct
-    key: correct
+  - title: rRMSE
+    key: rRMSE
+    index: 0
+    sorting: desc
+    hidden: false
+  - title: rRMSE_Tumor
+    key: rRMSE_tumor
     index: 0
     sorting: desc
     hidden: false

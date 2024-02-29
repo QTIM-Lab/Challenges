@@ -25,7 +25,6 @@ rRMSE_case =np.empty([num_cases])
 rRMSE_t_case =np.empty([num_cases])
 
 
-
 def read_data(file_dir, fname, i):
     
     fname_tmp = file_dir + "{:04}".format(i) + fname
