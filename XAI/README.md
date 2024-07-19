@@ -19,7 +19,7 @@ zip -r xai_code_submission_template_bundle.zip ./*
 
 ## Backup Bundle
 ```bash
-cp $ROOT/xai_code_submission_template_bundle.zip /sddata/data/Challenges/XAI/
+cp $ROOT/xai_code_submission_template_bundle.zip $DATA/
 ```
 
 ## Clear data for git
