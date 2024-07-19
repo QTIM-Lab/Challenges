@@ -16,7 +16,7 @@ output_dir = os.path.abspath(sys.argv[2]) # /app/output/
 program_dir = os.path.abspath(sys.argv[3]) # /app/program
 
 # When ingestion, this is the ingested program (YOU ARE RESPONSIBLE FOR THIS)
-submission_dir = os.path.abspath(sys.argv[4]) # /app/ingestion_program
+submission_dir = os.path.abspath(sys.argv[4]) # /app/ingested_program
 
 sys.path.append(program_dir) # Allow the loading of any extra utils
 sys.path.append(submission_dir) # Allow the loading of participant's code

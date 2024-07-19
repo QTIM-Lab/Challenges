@@ -6,14 +6,18 @@ image: logo.png
 pages:
   - title: overview
     file: overview.md
-  - title: participation
-    file: participate.md
+  - title: logistics
+    file: logistics.md
   - title: details
     file: details.md
+  - title: performance evaluation
+    file: performance_evaluation.md
+  - title: how to submit
+    file: how_to_submit.md
+  - title: tutorials
+    file: tutorials.md
   - title: data
     file: data.md
-  - title: evaluation
-    file: evaluation.md
 
 
 terms: terms.md

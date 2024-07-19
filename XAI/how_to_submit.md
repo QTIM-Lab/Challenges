@@ -13,7 +13,7 @@ System execution:
 ```bash
 DOCKER_IMAGE="codalab/codalab-legacy:py37"
 COMMAND="python3 /app/program/ingestion.py /app/input_data/ /app/output/ /app/program /app/ingested_program"
-DIR_OF_RUN="/home/bearceb/Desktop/Code_Submission_Challenge_Template/app_ingestion" # "/app" in container
+DIR_OF_RUN="/sddata/projects/Challenges/XAI/app_ingestion" # "/app" in container
 
 docker run \
   --rm \
@@ -158,7 +158,7 @@ System Execution:
 ```bash
 DOCKER_IMAGE="codalab/codalab-legacy:py37"
 COMMAND="python3 /app/program/scoring.py /app/input/ /app/output/"
-DIR_OF_RUN="/home/bearceb/Desktop/Code_Submission_Challenge_Template/app_scoring" # "/app" in container
+DIR_OF_RUN="/sddata/projects/Challenges/XAI/app_scoring" # "/app" in container
 
 docker run \
   --rm \
