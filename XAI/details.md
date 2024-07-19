@@ -1,101 +1,67 @@
-# MIDRC mRALE Mastermind Challenge;
+## Challenge details 
+### Challenge task
+The classification of frontal view portable chest radiographs (CXRs) for the presence of pneumonia, both on a by-image basis (the overall classification task) and on a by-pixel basis (the explainability maps). 
+### Chest radiographs and expert annotations
+The CXR images (a single antero-posterior view CXR per patient in DICOM format) have been annotated by 3 expert radiologists (out of a pool of 14 expert annotators). Annotators provided a score for pneumonia severity and manual outlines of lung opacities, if any. The severity scores were used by the challenge organizers to balance the distribution of normal, mild, moderate and severe cases between validation and test sets. Note that ‘normal’ images, i.e., images without lung opacities are also included! 
+The expert manual outlines have been used to generate probability maps for the presence of lung opacities, with regions annotated by 3 experts receiving a probability of 1, by 2 annotators a probability of 1/2, by one annotator a probability of 1/3, and by none of the annotators a probability of 0. Please see the “Evaluation” tab for details on how this reference standard is used to assess your generated explainability maps and calculate the primary performance metric. 
 
-## Challenge Details 
+### Model training 
+Annotated training data is not provided for this Challenge. You are welcome to train your model using your own data, publicly available datasets, and the data available in the MIDRC portal data.midrc.org.  The MIDRC GitHub repository contains helpful Jupyter notebooks as well for cohort building and downloading. 
 
-### Challenge Task
+### Performance metrics
+The primary performance metric to rank submissions is the weighted log-loss calculated from the pixel-by-pixel explainability maps as a measure for the agreement of participants’ explainability maps and the probability maps based on the 3 expert manual annotations of lung opacities. The secondary performance metric is calculated from the by-image output and is the area under the receiver operating curve (AUCROC) in the task of classifying CXRs for the presence of pneumonia. See “Evaluation” for more details.
+Submissions will be ranked using the prmimary performance metric. A statistically significant difference in performance between the winner and runners-up is not required to "win" the Challenge. Only performance on the test set will be used to determine the final ranking of submissions. 
 
-The task is to predict COVID-19 severity in terms of **mRALE score** from portable chest X-ray radiographs (CXRs) obtained within 2 days of a positive COVID test. The acronym mRALE stands for modified RALE score which, in turn, stands for Radiographic Assessment of Lung Edema. This grading scale was originally validated for use in pulmonary edema assessment in acute respiratory distress syndrome and incorporates the extent and density of alveolar opacities on chest radiographs. The grading system is relevant to COVID-19 patients as the chest radiograph findings tend to involve multifocal alveolar opacities, and many hospitalized COVID-19 patients develop acute respiratory distress syndrome. To obtain an mRALE score,each lung is assigned a score for the extent of involvement by consolidation or ground glass/hazy opacities (0 = "none"; 1 = "≤ 25%"; 2 = "25%–50%"; 3 = "51%–75%"; 4 = ">75%" involvement). Each lung score is then multiplied by an overall density score (1 = "hazy", 2 = "moderate", 3 = "dense"). The sum of scores from each lung is the mRALE score.Thus, a normal chest radiograph receives a score of 0, while a chest radiograph with complete consolidation of both lungs receives the maximum score of 24.  
+### Output of your model/algorithm
+For each CXR, the output of your model should be 
+1.	an estimated overall probability of pneumonia, and 
+2.	an explainability map indicating the likelihood of lung opacity presence at each pixel.
 
-### Chest X-ray Radiograph Expert Annotations
+### Formatting the output of your model
+1. The by-image output of your method should be provided in a single comma-separated CSV file with image names in the first column and the corresponding output probability score in the second column.  
 
-The CXR exams have been annotated in terms of left lung/right lung extent of involvement and density from which the mRALE score has been calculated. Note that for frontal CXR, the left lung is displayed on the right and vice versa. For completeness, and potential use in model training, the individual left/right lung assessments are included in the annotation file (see "Get Data") with self-explanatory column headers and the encoding for involvement: 0 = "none"; 1 = "≤ 25%"; 2 = "25%–50%"; 3 = "51%–75%"; 4 = ">75%" involvement, and for overall density:1 = "hazy", 2 = "moderate", 3 = "dense". 
+	Make sure the header and rows are in this specific format: 
 
-The estimated mRALE score is the only output your AI/ML model needs to provide. Other output scores are not allowed. 
+			fileNamePath,score 
+			<dicom-name-1>.dcm,<float between 0 and 1> 	
+			<dicom-name-2>.dcm,<float between 0 and 1> 
+			<dicom-name-3>.dcm, float between 0 and 1> 
+			... 
+			etc. 
 
-### Performance Metrics [COMING SOON]
+2. The by-pixel explainability maps should be of the same size as the input image and at each pixel indicate the likelihood of there being a lung opacity at that location with values between 0 and 1. Values do not need to add to 1 for an image. Note that also ‘normal’ images, i.e., images without lung opacities will be part of the validation and test sets. [COMING SOON: the exact format for the explainability maps].
 
-The primary performance metric to rank submissions is **..?..**. Submissions will be ranked using the primary performance metric. A statistically significant difference in performance between the winner and runners-up is notrequired to "win" the Challenge.Only performance on the test set will be used to rank submissions. A secondary performance metric, **..?..**, will be used to break ties, if needed. 
+### The Challenge platform specs
+[COMING SOON: exact platform specs, including GPU]
 
-### Output of Your Model/Algorithm
+Note that internet connectivity is not provided within the Challenge platform. All necessary code, model weights, and library requirements need to be provided in your submission. GPU will only be available during the validation and test phases, not for the practice submissions during the training phase. 
 
-The output of your model should be an estimated mRALE score (a single score per CXR image), which is a score between 0 (normal) and 24 (the most severe).  
+### Submissions to the Challenge platform
+For detailed instructions how to perform submissions to the platform, please see the “How to submit” tab. 
+ It is important to note that all model training and fine-tuning needs to be performed on your own hardware. The Challenge platform only performs inference using trained models submitted in the required format. 
 
-### Formatting the Output of Your Model
+There is no performance assessment for the practice submissions using the practice data, given the small number of cases in this phase, but you will be able to compare output generated on the platform to that generated locally. The performance of your model(s) will be reported back to you and shown on the Leaderboard in the validation phase. For the test phase, performance will be reported after conclusion of the Challenge.  
 
-The output of your method should be provided in a single comma-separated CSV file with image name in the first column and the corresponding output mRALE score in the second column.  
+In the test phase, a description of your model and training data (plain text or Word file) needs to be included in your zip archive submission for your submission to be considered a valid submission, i.e., for its performance to be reported back to you and to be part of the Challenge.  
 
-* Make sure the header and rows are in this specific format: 
+### Local computer requirements
+It is advisable to have Docker installed on your local computer so you can check locally how your code runs within a Docker Image. Go to https://docs.docker.com/ to learn more about how to install Docker on your own computer and see "Tutorials" for additional information.  
+Docker Images will be built and run on the Challenge platform with Docker. A local install of Docker should be version version 20.10.13 and above. 
 
-fileNamePath,score [coming soon]
+### Sharing of code and trained models
+It is highly encouraged that you allow MIDRC to make your code and trained model(s) public on the MIDRC GitHub and a requirement to receive prize money (see "Terms and Conditions").  
 
-<dicom-name-1>.dcm,<integer mRALE score between 0 and 24> 
+### Summary
+>**Challenge data,** single portable CXR per patient, normal CXRs without lung opacities are included 
+>Training phase: only 10 'annotated practice' cases
+>Validation phase: ~300 CXRs
+>Test	phase:~2000 CXRs
 
-<dicom-name-2>.dcm,<integer mRALE score between 0 and 24> 
-
-<dicom-name-3>.dcm,<integer mRALE score between 0 and 24> 
-
-... 
-
-etc. 
-
-### The Challenge Platform Specs
-The system specifications are as follows: 
-
-| Azure VM Name     | vCPU  | RAM (GB)  |  Temp Storage SSD (GB)  |  GPU  | GPU Memory (GB)  |  Max uncached disk throughput:  IOPS/MBps  |  Max NICs |
-|-------------------|-------|-----------|-------------------------|-------|------------------|--------------------------------------------|-----------|
-| Standard_NC6s_v3  | 6     | 112       | 736                     | 1     | 16               | 20000/200                                  | 4         |
-
-**Note that** internet connectivity is not provided within the Challenge platform. All necessary code, model weights, and library requirements need to be provided in your submission. GPU will only be available during the validation and test phases, not for the practice submissions during the training phase. 
-
-### Submissions to the Challenge Platform
-You need to supply a zip archive that contains a Dockerfile, all necessary code, and a trained model to allow the Challenge platform to build a Docker Image to run and evaluate your model on the practice cases, validation, or test sets, depending on the Challenge phase, respectively. Example zip archives suitable for submission are provided in the "Starting Kit" (go to the "Participate" tab, then to "Files"). Each trained model needs to be submitted in its own zip archive. It is important to note that all model training and fine-tuning needs to be performed on your own hardware. The Challenge platform only performs inference using trained models submitted in the required format. 
-
-There is no performance assessment for the practice submissions using the practice data.The performance of your model(s) will be reported back to you and shown on the Leaderboard in the validation phase. For the test phase, performance will be reported after conclusion of the Challenge.  
-
-**In the test phase, a description of your model and training data (plain text or Word file) needs to be included in your zip archive submission for your submission to be considered a valid submission, i.e., for its performance to be reported back to you and to be part of the Challenge.** 
-
-### Local Computer Requirements
-It is advisable to have Docker installed on your local computer so you can check locally how your code runs within a Docker Image. Go to https://docs.docker.com/ to learn more about how to install Docker on your own computer. The videos at the "Tutorials" link (left) provideadditional information.  
-
-Docker Images will be built and run on the Challenge platform with Docker version 20.10.13 and above, so, if possible, a local install of Docker should be that version or higher. 
-
-### Sharing of Code and Trained Models
-It is highly encouraged that you allow MIDRC to make your code and trained model(s) public on the MIDRC GitHub (see "Terms and Conditions").  
-
-### Summary Tables [COMING SOON]
+> **Submissions**
+> Training phase: no limit
+> Validation phase: 10 (leaderboard)
+> Test phase: 3 (no leaderboard)
  
-| Challenge data       | Data available for download  | Data available on platform for inference  | Number of CXR exams  |
-|----------------------|------------------------------|-------------------------------------------|----------------------|
-| Training             | Yes                          | No                                        | ~2,000               |
-| Practice submission  | Yes                          | Yes                                       | 12                   |
-| Validation           | No                           | Yes                                       |  ~300                |
-| Test                 | No                           | Yes                                       | ~1,000               |
- 
-| Challenge phase      | Leaderboard  |  GPU available  |  Maximum number of submissions  | Maximum size of zip archive submissions  |  Maximum submission run time on platform  |
-|----------------------|--------------|-----------------|---------------------------------|------------------------------------------|-------------------------------------------|
-| Training*            | N/A          | N/A             | N/A                             | N/A                                      | N/A                                       |
-| Practice submission  | No           | No              | 20                              | ?                                        | ?                                         |
-| Validation           | Yes          | Yes             | 10                              | ?                                        | ?                                         |
-| Test                 | No           | Yes             | 3                               | ?                                        | ?                                         |
+[COMING SOON: maximum size of submissions, maximum run time]
 
-### Summary of Important Points
-1. All model training and fine-tuning needs to be performed on your own hardware. The Challenge platform submission system should be used for inference only using a trained model during the Docker practice submission period and for the validation and test phases of the Challenge. 
-
-2. The validation and test data will not be made available to participants and both sets contain unpublished data (to be made publicly available in time after conclusion of this Challenge). 
-
-3. It is highly encouraged to practice submitting a Docker archive to the platform during the Challenge training phase for inference on the small set of ‘practice’ cases on the Challenge platform. Technical help will not be available to your team in later phases of the Challenge if your team did not participate in the practice submissions. 
-
-4. CXRs for the Challenge validation and test datasets 
-
-    a) are portable CXRs in the anteroposterior (AP) view
-    b) were obtained within 2 days of a positive COVID test 
-    c) are in DICOM format only. Any potential conversion from DICOM to a different image format must be performed within your submitted Docker container.
-    d) pertain to adults (no pediatric exams)
-    e) represent a single CXR per subject (patient) 
-    For more details see the "Get Data" link under the "Participate" tab. 
-
-5. Within the Challenge platform, Docker submissions will **not** be allowed to access the internet (e.g., downloading pre-trained ImageNet weights will not be possible). Everything needed to successfully run your model needs to be included in your submitted Docker container. 
-
-6. GPU will be available on the Challenge platform only during the validation and test phases. 
-
-7. Submissions that exit with an error, i.e., submissions that fail, do not count towards the maximum number of submissions allowed. 
+Note: Submissions that exit with an error, i.e., submissions that fail, do not count towards the maximum number of submissions allowed.
