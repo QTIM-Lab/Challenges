@@ -1,4 +1,7 @@
 # Code Submission Challenge Template
+
+> Upasana, I'm shifting things as I go but below is sort of the general scripts to clear data out and restore it. Look at "how_to_submit.md" for direct instructions and explaination of ingestion\scoring program.
+
 ```bash
 shopt -s extglob # This command enables the extended pattern matching features in Bash, allowing us to use `!(pattern)` to match everything except the specified pattern.
 ```
