@@ -4,16 +4,21 @@ There are two parts two a submission, ingestion and scoring.
 
 ## Ingestion Program:
 
-This takes the code you define and runs it against our input data.
+This takes the code you (participant) define and runs it against our input data.
 
 * ingestion - challenge organizer program
 * ingested - participant provided algorithm
+
+```bash
+ROOT=/sddata/projects/Challenges/XAI
+cd $ROOT
+```
 
 System execution:
 ```bash
 DOCKER_IMAGE="codalab/codalab-legacy:py37"
 COMMAND="python3 /app/program/ingestion.py /app/input_data/ /app/output/ /app/program /app/ingested_program"
-DIR_OF_RUN="/sddata/projects/Challenges/XAI/app_ingestion" # "/app" in container
+DIR_OF_RUN="$ROOT/app_ingestion" # "/app" in container
 
 docker run \
   --rm \
@@ -154,11 +159,16 @@ if __name__ == '__main__':
 
 ## Score:
 
+Prep `app_scoring` directory with participant predictions:
+```bash
+cp $ROOT/app_ingestion/output/* $ROOT/app_scoring/input/res/
+```
+
 System Execution:
 ```bash
 DOCKER_IMAGE="codalab/codalab-legacy:py37"
 COMMAND="python3 /app/program/scoring.py /app/input/ /app/output/"
-DIR_OF_RUN="/sddata/projects/Challenges/XAI/app_scoring" # "/app" in container
+DIR_OF_RUN="$ROOT/app_scoring" # "/app" in container
 
 docker run \
   --rm \
