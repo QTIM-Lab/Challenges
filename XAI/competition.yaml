@@ -1,0 +1,55 @@
+version: 2
+title: XAI COVID Severity Challenge
+description: Demo Ingestion Program As Well as Scoring Program
+image: logo.png
+
+pages:
+  - title: overview
+    file: overview.md
+  - title: participation
+    file: participate.md
+  - title: details
+    file: details.md
+  - title: data
+    file: data.md
+  - title: evaluation
+    file: evaluation.md
+
+
+terms: terms.md
+
+tasks:
+  - index: 0
+    name: Wheat Seed Development Task
+    input_data: dev_phase/input_data/
+    reference_data: dev_phase/reference_data/
+    ingestion_program: ingestion_program/
+    scoring_program: scoring_program/
+
+
+solutions:
+  - index: 0
+    tasks:
+    - 0
+    path: solution.zip
+
+phases:
+  - name: Development Phase
+    description: 'Development phase: tune your models and submit prediction results, trained model, or untrained model.'
+    start: 1-1-2024
+    end: 12-31-2024
+    tasks:
+      - 0
+
+leaderboards:
+  - title: Results
+    key: main
+    columns:
+      - title: Prediction score
+        key: accuracy
+        index: 0
+        sorting: desc
+      - title: Duration
+        key: duration
+        index: 1
+        sorting: desc

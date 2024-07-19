@@ -1,13 +1,26 @@
-# IVIM, delete when dormant
+# IVIM, empty folders when not using and clear contents from git
 IVIM/input_data
 IVIM/reference_data
 IVIM/public_data
 
-# CT-MAR, delete when dormant
+# CT-MAR, empty folders when not using and clear contents from git
 CT-MAR/input_data
 CT-MAR/reference_data
 CT-MAR/public_data
 CT-MAR/sample_submission
+
+# XAI, empty folders when not using and clear contents from git
+XAI/app_ingestion/ingestion_program
+XAI/app_ingestion/input_data
+XAI/app_ingestion/output
+XAI/app_ingestion/program
+XAI/app_ingestion/scoring_program
+
+XAI/app_scoring/input/ref
+XAI/app_scoring/input/res
+XAI/app_scoring/output
+XAI/app_scoring/program
+
 
 
 # npys
