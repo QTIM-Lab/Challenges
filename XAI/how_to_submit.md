@@ -17,7 +17,8 @@ cd $ROOT
 System execution:
 ```bash
 DOCKER_IMAGE="codalab/codalab-legacy:py37"
-COMMAND="python3 /app/program/ingestion.py /app/input_data/ /app/output/ /app/program /app/ingested_program"
+# COMMAND="python3 /app/program/ingestion.py /app/input_data/ /app/output/ /app/program /app/ingested_program" # Normal Run
+COMMAND="python3 /app/ingested_program/main.py /app/input_data/ /app/output/ /app/program /app/ingested_program"
 DIR_OF_RUN="$ROOT/app_ingestion" # "/app" in container
 
 docker run \
@@ -30,7 +31,9 @@ docker run \
   -e PYTHONUNBUFFERED=1 \
   -v $DIR_OF_RUN/program:/app/ingested_program \
   -v $DIR_OF_RUN/input_data:/app/input_data \
+  -it \
   $DOCKER_IMAGE $COMMAND
+  # -it bash
 ```
 
 > Note -v is defined as: ```-v <local VM dir of run>:<container dir>```
@@ -115,7 +118,7 @@ output_dir = os.path.abspath(sys.argv[2]) # /app/output/
 program_dir = os.path.abspath(sys.argv[3]) # /app/program
 
 # When ingestion, this is the ingested program (YOU ARE RESPONSIBLE FOR THIS)
-submission_dir = os.path.abspath(sys.argv[4]) # /app/ingestion_program
+submission_dir = os.path.abspath(sys.argv[4]) # /app/ingested_program
 
 sys.path.append(program_dir) # Allow the loading of any extra utils
 sys.path.append(submission_dir) # Allow the loading of participant's code
@@ -179,6 +182,7 @@ docker run \
   -w /app/program \
   -e PYTHONUNBUFFERED=1 \
   -v $DIR_OF_RUN/input:/app/input \
+  -it \
   $DOCKER_IMAGE $COMMAND
 ```
 
