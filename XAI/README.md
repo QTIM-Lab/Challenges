@@ -17,10 +17,52 @@ DATA=/sddata/data/Challenges/XAI
 zip -r xai_code_submission_template_bundle.zip ./*
 ```
 
+
 ## Backup Bundle
 ```bash
 cp $ROOT/xai_code_submission_template_bundle.zip $DATA/
 ```
+
+
+## Create Datasets
+Needed to make changes outside bundle upload
+
+### Public Data
+```bash
+zip -j public_data.zip $ROOT/public_data/!(.gitkeep)
+cp public_data.zip $DATA/first_real_phase/
+```
+
+### Ingestion Zip
+```bash
+zip -j ingestion_program.zip $ROOT/app_ingestion/ingestion_program/metadata.yaml
+```
+
+### Sample Submission Zip
+```bash
+zip -j sample_solution_xai.zip $ROOT/app_ingestion/program/main.py
+zip -j sample_solution_xai.zip $ROOT/app_ingestion/program/pneumonia_inception.pt
+cp sample_solution_xai.zip $DATA/first_real_phase/
+```
+
+### Scoring Program
+```bash
+zip -j scoring_program.zip $ROOT/app_scoring/program/scoring.py
+zip -j scoring_program.zip $ROOT/app_scoring/program/metadata.yaml
+```
+
+### Input Data
+```bash
+zip -j input_data.zip $ROOT/app_scoring/input/ref/!(.gitkeep)
+cp input_data.zip $DATA/first_real_phase/
+```
+
+### Reference Data
+```bash
+zip -j ref_data.zip $ROOT/app_scoring/input/ref/!(.gitkeep)
+cp ref_data.zip $DATA/first_real_phase/
+```
+
 
 ## Clear data for git
 
