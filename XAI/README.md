@@ -63,6 +63,14 @@ zip -j ref_data.zip $ROOT/app_scoring/input/ref/!(.gitkeep)
 cp ref_data.zip $DATA/first_real_phase/
 ```
 
+### Starting Kit
+```bash
+cp -r $ROOT/app_ingestion ./starting_kit/
+cp -r $ROOT/app_scoring ./starting_kit/
+zip -r starting_kit.zip $ROOT/starting_kit/!(.gitkeep)
+cp starting_kit.zip $DATA/first_real_phase/
+```
+
 
 ## Clear data for git
 
@@ -80,6 +88,12 @@ rm -r $ROOT/app_ingestion/output/!(.gitkeep) # leave
 ```bash
 rm -r $ROOT/app_scoring/input/ref/!(.gitkeep) # leave
 ```
+
+### scoring_reference_data
+```bash
+rm $ROOT/starting_kit.zip
+```
+
 
 ### scoring_results
 ```bash
