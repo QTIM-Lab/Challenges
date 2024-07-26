@@ -70,8 +70,7 @@ def main():
     # pdb.set_trace()
 
     # path to the 'model.pt'
-    ## NEED A LOAD IN EXAMPLE ##
-    model = os.path.join(program_dir, 'pneumonia_inception.pt')
+    model = os.path.join(submission_dir, 'pneumonia.pt')
 
     generate_pred_matrices(input_dir, output_dir, model)
     pred_matrices_sanity_checks(input_dir, output_dir)

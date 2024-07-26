@@ -14,6 +14,9 @@ print('Reading prediction')
 ref_img_list = [i for i in os.listdir(reference_dir) if i.find(".npy") != -1]
 pred_img_list = [i for i in os.listdir(prediction_dir) if i.find(".npy") != -1]
 
+ref_img_list.sort()
+pred_img_list.sort()
+
 # Weighted Log Loss
 wll_list = []
 for i, (ref_img, pred_img) in enumerate(zip(ref_img_list, pred_img_list)):

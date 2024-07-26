@@ -41,7 +41,7 @@ zip -j ingestion_program.zip $ROOT/app_ingestion/ingestion_program/metadata.yaml
 ### Sample Submission Zip
 ```bash
 zip -j sample_solution_xai.zip $ROOT/app_ingestion/program/main.py
-zip -j sample_solution_xai.zip $ROOT/app_ingestion/program/pneumonia_inception.pt
+zip -j sample_solution_xai.zip $ROOT/app_ingestion/program/pneumonia.pt
 cp sample_solution_xai.zip $DATA/training_practice/
 ```
 
@@ -65,10 +65,13 @@ cp ref_data.zip $DATA/training_practice/
 
 ### Starting Kit
 ```bash
-cp -r $ROOT/app_ingestion ./starting_kit/
-cp -r $ROOT/app_scoring ./starting_kit/
+cp $ROOT/app_ingestion/ingestion_program/metadata.yaml ./starting_kit/app_ingestion/ingestion_program/
+cp $ROOT/app_ingestion/program/main.py ./starting_kit/app_ingestion/program/
+ /sddata/projects/Challenges/XAI/app_ingestion/program/main.py
+cp $ROOT/app_scoring/program/metadata.yaml ./starting_kit/app_scoring/program/
+cp $ROOT/app_scoring/program/scoring.py ./starting_kit/app_scoring/program/
 cp -r $ROOT/sample_docker_image ./starting_kit/
-zip -r starting_kit.zip $ROOT/starting_kit/!(.gitkeep)
+zip -r starting_kit.zip starting_kit/!(.gitkeep)
 cp starting_kit.zip $DATA/training_practice/
 ```
 
