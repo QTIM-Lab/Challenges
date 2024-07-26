@@ -1,5 +1,10 @@
 # How to participate
 
+```bash
+ROOT=./ # Dir of starting_kit; If inside "./" is perfect.
+cd $ROOT
+```
+
 ## Build Docker Image
 
 ```bash
@@ -25,11 +30,6 @@ This takes the code you (participant) define and runs it against our input data 
 * ingestion - challenge organizer program
 * ingested - participant provided algorithm
 
-```bash
-# ROOT=./ # Dir of starting_kit; If inside "./" is perfect.
-ROOT=/sddata/projects/Challenges/XAI # Dir of starting_kit; If inside "./" is perfect.
-cd $ROOT
-```
 
 How the system executes your submission:
 ```bash
