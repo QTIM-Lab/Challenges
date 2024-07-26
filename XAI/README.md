@@ -30,7 +30,7 @@ Needed to make changes outside bundle upload
 ### Public Data
 ```bash
 zip -j public_data.zip $ROOT/public_data/!(.gitkeep)
-cp public_data.zip $DATA/first_real_phase/
+cp public_data.zip $DATA/training_practice/
 ```
 
 ### Ingestion Zip
@@ -42,7 +42,7 @@ zip -j ingestion_program.zip $ROOT/app_ingestion/ingestion_program/metadata.yaml
 ```bash
 zip -j sample_solution_xai.zip $ROOT/app_ingestion/program/main.py
 zip -j sample_solution_xai.zip $ROOT/app_ingestion/program/pneumonia_inception.pt
-cp sample_solution_xai.zip $DATA/first_real_phase/
+cp sample_solution_xai.zip $DATA/training_practice/
 ```
 
 ### Scoring Program
@@ -54,21 +54,22 @@ zip -j scoring_program.zip $ROOT/app_scoring/program/metadata.yaml
 ### Input Data
 ```bash
 zip -j input_data.zip $ROOT/app_scoring/input/ref/!(.gitkeep)
-cp input_data.zip $DATA/first_real_phase/
+cp input_data.zip $DATA/training_practice/
 ```
 
 ### Reference Data
 ```bash
 zip -j ref_data.zip $ROOT/app_scoring/input/ref/!(.gitkeep)
-cp ref_data.zip $DATA/first_real_phase/
+cp ref_data.zip $DATA/training_practice/
 ```
 
 ### Starting Kit
 ```bash
 cp -r $ROOT/app_ingestion ./starting_kit/
 cp -r $ROOT/app_scoring ./starting_kit/
+cp -r $ROOT/sample_docker_image ./starting_kit/
 zip -r starting_kit.zip $ROOT/starting_kit/!(.gitkeep)
-cp starting_kit.zip $DATA/first_real_phase/
+cp starting_kit.zip $DATA/training_practice/
 ```
 
 

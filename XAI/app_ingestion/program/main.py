@@ -11,17 +11,25 @@ import json
 import sys
 import time
 import numpy as np
+import pydicom
+import pandas as pd
 
 # function that are custom to the participants: they have to take inputs: input_images_dir, output_dir, model
 # to generate their pred matrices in the output_dir
 def generate_pred_matrices(input_images_dir, output_dir, model):
-    input_filenames = [f for f in os.listdir(input_images_dir) if f.endswith('.npy')]
-    input_np_arrays = [np.load(os.path.join(input_images_dir, f)) for f in input_filenames]
-    # simulated pred matrices
+    input_filenames = [f for f in os.listdir(input_images_dir) if f.endswith('.dcm')]
+    input_np_arrays = [pydicom.dcmread(os.path.join(input_images_dir, f)).pixel_array for f in input_filenames]
+    # Simulated pred matrices
     predictions = [np.random.rand(*array.shape) for array in input_np_arrays]
+    # pdb.set_trace()
     os.makedirs(output_dir, exist_ok=True)
     for pred, fname in zip(predictions, input_filenames):
-        np.save(os.path.join(output_dir, fname), pred)
+        np.save(os.path.join(output_dir, fname.replace(".dcm","")), pred)
+    # Classification by image
+    predictions = [np.random.rand(1)[0] for file in input_filenames]
+    classifications = pd.DataFrame({"fileNamePath":input_filenames, "score":predictions}) 
+    classifications.to_csv(os.path.join(output_dir,"image-level-classifications.csv"), index=None)
+
     
 # function required by organizers to run as sanity checks to participants' pred matrices
 def pred_matrices_sanity_checks(input_images_dir, output_dir):
