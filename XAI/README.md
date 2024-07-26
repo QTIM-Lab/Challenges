@@ -68,7 +68,7 @@ cp ref_data.zip $DATA/training_practice/
 cp $ROOT/app_ingestion/ingestion_program/metadata.yaml ./starting_kit/app_ingestion/ingestion_program/
 cp $ROOT/app_ingestion/program/main.py ./starting_kit/app_ingestion/program/
 cp $ROOT/app_ingestion/program/pneumonia.pt ./starting_kit/app_ingestion/program/
-cp $ROOT/app_scoring/program/metadata.yaml ./starting_kit/app_scoring/program/
+cp $ROOT/app_scoring/program/metadata.yaml ./stscp lin  arting_kit/app_scoring/program/
 cp $ROOT/app_scoring/program/scoring.py ./starting_kit/app_scoring/program/
 cp -r $ROOT/sample_docker_image ./starting_kit/
 zip -r starting_kit.zip starting_kit/!(.gitkeep)
