@@ -67,7 +67,7 @@ cp ref_data.zip $DATA/training_practice/
 ```bash
 cp $ROOT/app_ingestion/ingestion_program/metadata.yaml ./starting_kit/app_ingestion/ingestion_program/
 cp $ROOT/app_ingestion/program/main.py ./starting_kit/app_ingestion/program/
- /sddata/projects/Challenges/XAI/app_ingestion/program/main.py
+cp $ROOT/app_ingestion/program/pneumonia.pt ./starting_kit/app_ingestion/program/
 cp $ROOT/app_scoring/program/metadata.yaml ./starting_kit/app_scoring/program/
 cp $ROOT/app_scoring/program/scoring.py ./starting_kit/app_scoring/program/
 cp -r $ROOT/sample_docker_image ./starting_kit/
