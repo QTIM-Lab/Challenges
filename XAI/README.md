@@ -17,29 +17,43 @@ DATA=/sddata/data/Challenges/XAI
 zip -r xai_code_submission_template_bundle.zip ./*
 ```
 
-
 ## Backup Bundle
 ```bash
 cp $ROOT/xai_code_submission_template_bundle.zip $DATA/
 ```
 
+## Backup Utils
+```bash
+cp -r /sddata/projects/Challenges/XAI/utils $DATA/training_practice/
+```
+
+
 
 ## Create Datasets
 Needed to make changes outside bundle upload
 
+### Docker Image
+```bash
+zip -j sample_docker_image.zip $ROOT/sample_docker_image/!(.gitkeep)
+cp sample_docker_image.zip $DATA/training_practice/
+```
+
 ### Public Data
 ```bash
-zip -j public_data.zip $ROOT/public_data/!(.gitkeep)
+cd $ROOT/public_data/
+zip -r public_data.zip ./!(.gitkeep); mv public_data.zip $ROOT/; cd $ROOT
 cp public_data.zip $DATA/training_practice/
 ```
 
 ### Ingestion Zip
 ```bash
 zip -j ingestion_program.zip $ROOT/app_ingestion/ingestion_program/metadata.yaml
+cp ingestion_program.zip $DATA/training_practice/
 ```
 
 ### Sample Submission Zip
 ```bash
+zip -j sample_solution_xai.zip $ROOT/app_ingestion/program/entrypoint.sh
 zip -j sample_solution_xai.zip $ROOT/app_ingestion/program/main.py
 zip -j sample_solution_xai.zip $ROOT/app_ingestion/program/pneumonia.pt
 cp sample_solution_xai.zip $DATA/training_practice/
@@ -49,11 +63,12 @@ cp sample_solution_xai.zip $DATA/training_practice/
 ```bash
 zip -j scoring_program.zip $ROOT/app_scoring/program/scoring.py
 zip -j scoring_program.zip $ROOT/app_scoring/program/metadata.yaml
+cp scoring_program.zip $DATA/training_practice/
 ```
 
 ### Input Data
 ```bash
-zip -j input_data.zip $ROOT/app_scoring/input/ref/!(.gitkeep)
+zip -j input_data.zip $ROOT/app_ingestion/input_data/!(.gitkeep)
 cp input_data.zip $DATA/training_practice/
 ```
 
@@ -66,9 +81,10 @@ cp ref_data.zip $DATA/training_practice/
 ### Starting Kit
 ```bash
 cp $ROOT/app_ingestion/ingestion_program/metadata.yaml ./starting_kit/app_ingestion/ingestion_program/
+cp $ROOT/app_ingestion/program/entrypoint.sh ./starting_kit/app_ingestion/program/
 cp $ROOT/app_ingestion/program/main.py ./starting_kit/app_ingestion/program/
 cp $ROOT/app_ingestion/program/pneumonia.pt ./starting_kit/app_ingestion/program/
-cp $ROOT/app_scoring/program/metadata.yaml ./stscp lin  arting_kit/app_scoring/program/
+cp $ROOT/app_scoring/program/metadata.yaml ./starting_kit/app_scoring/program/
 cp $ROOT/app_scoring/program/scoring.py ./starting_kit/app_scoring/program/
 cp -r $ROOT/sample_docker_image ./starting_kit/
 zip -r starting_kit.zip starting_kit/!(.gitkeep)
@@ -119,15 +135,15 @@ rm -r $ROOT/public_data/!(.gitkeep) # leave
 
 ### ingestion_input_data
 ```bash
-cp -r $DATA/dev_phase/input_data/* $ROOT/app_ingestion/input_data/
+cp -r $DATA/training_practice/input_data/* $ROOT/app_ingestion/input_data/
 ```
 
 ### scoring_reference_data
 ```bash
-cp -r $DATA/dev_phase/reference_data/* $ROOT/app_scoring/input/ref/
+cp -r $DATA/training_practice/reference_data/* $ROOT/app_scoring/input/ref/
 ```
 
 ### public_data
 ```bash
-cp -r $DATA/public_data/* $ROOT/public_data/
+cp -r $DATA/training_practice/public_data/* $ROOT/public_data/
 ```

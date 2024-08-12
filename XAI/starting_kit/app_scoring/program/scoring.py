@@ -5,6 +5,8 @@ import sys
 import numpy as np
 from sklearn.metrics import log_loss, roc_auc_score
 import pandas as pd
+from PIL import Image
+import cv2
 
 reference_dir = os.path.join(sys.argv[1], 'ref')
 prediction_dir = os.path.join(sys.argv[1], 'res')
@@ -12,35 +14,63 @@ score_dir = sys.argv[2]
 print('Reading prediction')
 
 ref_img_list = [i for i in os.listdir(reference_dir) if i.find(".npy") != -1]
-pred_img_list = [i for i in os.listdir(prediction_dir) if i.find(".npy") != -1]
+pred_img_list = [i for i in os.listdir(prediction_dir) if i.find(".png") != -1]
 
 ref_img_list.sort()
 pred_img_list.sort()
 
+def upsample_saliency_map(saliency_map, gt_mask, interpolation=cv2.INTER_CUBIC):
+    target_size = gt_mask.shape[:2][::-1]
+    if saliency_map.ndim == 3 and saliency_map.shape[2] == 3:
+        saliency_map = saliency_map.mean(axis=2)
+    # Upsample the saliency map
+    upsampled_saliency_map = cv2.resize(
+        saliency_map, target_size, interpolation=interpolation
+    )
+    return upsampled_saliency_map
+
+
 # Weighted Log Loss
-wll_list = []
+wll_list = {}
+
 for i, (ref_img, pred_img) in enumerate(zip(ref_img_list, pred_img_list)):
-    print(f"On image {i+1} | {ref_img}")
+    print(f"On image {i+1} | {pred_img}")
     ref_np = np.load(os.path.join(reference_dir, ref_img))
-    pred_np = np.load(os.path.join(prediction_dir, pred_img))
-    
+    ## CONVER REF TO PNG
+    loaded_image_255 = np.array(Image.open(os.path.join(prediction_dir,  pred_img)))
+    loaded_image_0_1 = loaded_image_255.astype(np.float32) / 255.0  # Convert back to float and scale to 0-1
+    del(loaded_image_255)
+    ref_np.shape
+    loaded_image_0_1.shape
+    pred_np = loaded_image_0_1
+    # print(type(loaded_image_0_1))
+    # print(loaded_image_0_1.shape)
+    # pdb.set_trace()
+    # compare_arrays(pred_np, loaded_image_0_1)
+    ## CONVER REF TO PNG
+    ## Raw upscale check
+    ## SCORING PROGRAM
+    # pred_png = Image.open(os.path.join(utils, pred_img))
+    # pred_np = np.array(pred_png).astype(np.float32) / 255.0
+    ## SCORING PROGRAM
     # Ensure the same shape for both reference and prediction arrays
+    # pdb.set_trace()
     assert ref_np.shape == pred_np.shape, f"Shape mismatch: {ref_np.shape} vs {pred_np.shape}"
     ref_binarized = np.where(ref_np > 0, 1, 0)
+    ref_binarized.shape
+    pred_np.shape
     ref_pmap_to_weights = np.where(ref_np == 0, 1,
-                                   np.where((ref_np > 0) & (ref_np <= 1/3), 15,
-                                            np.where((ref_np > 1/3) & (ref_np <= 2/3), 30,
-                                                     np.where((ref_np > 2/3) & (ref_np <= 1), 45, 45))))
-
-    wll = log_loss(ref_binarized.flatten(), pred_np.flatten(), sample_weight=ref_pmap_to_weights.flatten())
-    wll_list.append(wll)
+                          np.where((ref_np == 1/3), 15,
+                          np.where((ref_np == 2/3), 30,
+                          np.where((ref_np == 1), 45, 1))))
+    # pdb.set_trace()
+    wll = log_loss(ref_binarized.flatten(), pred_np.flatten(), sample_weight=ref_pmap_to_weights.flatten(), labels=[0,1])
+    wll_list[pred_img] = wll
 
 # pdb.set_trace()
-
 # AUC_ROC
-
 try:
-    ref_classifications = pd.read_csv(os.path.join(reference_dir,"image-level-ref-classifications.csv"))
+    ref_classifications = pd.read_csv(os.path.join(reference_dir,"image-level-classifications.csv"))
 except:
     raise Exception("Can't find reference classifications")
 
@@ -50,6 +80,8 @@ except:
     raise Exception("Can't find prediction classifications")
 
 try:
+    from time import sleep;
+    # sleep(60*5)
     join = pd.merge(ref_classifications, pred_classifications, on="fileNamePath")
     join = join.rename(columns = {"score_x":"y_true", "score_y":"y_score"})
     y_true = join['y_true']
@@ -64,7 +96,8 @@ except:
 
 
 # Aggregate results
-average_wll = np.mean(wll_list)
+
+average_wll = np.mean(list(wll_list.values()))
 
 print(f'Average Weighted Log Loss: {average_wll}')
 print(f'AUC ROC: {auc_roc}')
@@ -75,7 +108,43 @@ scores = {
     'auc_roc': auc_roc
 }
 
+# detailed_scores = {f"{k} | wll -> ":wll_list[k] for k in wll_list.keys()}
+detailed_scores = wll_list
+
 with open(os.path.join(score_dir, 'scores.json'), 'w') as score_file:
     score_file.write(json.dumps(scores))
 with open(os.path.join(score_dir, 'scores.html'), 'w') as html_file:
-    html_file.write(json.dumps(scores))
+    html_file.write(f"Weighted Log Loss by Image:\n")
+    html_file.write(json.dumps(detailed_scores, indent = 2))
+
+
+
+
+
+
+#### Appendix
+
+# function required by organizers to run as sanity checks to participants' pred matrices
+# def pred_matrices_sanity_checks(input_images_dir, output_dir):
+#     input_filenames = [f for f in os.listdir(input_images_dir) if f.endswith('.npy')]
+#     input_np_arrays = {f: np.load(os.path.join(input_images_dir, f)) for f in input_filenames}
+#     output_filenames = [f for f in os.listdir(output_dir) if f.endswith('.npy')]
+    
+#     for file in output_filenames:
+#         pred_matrix = np.load(os.path.join(output_dir, file))
+#         # Check if the prediction matrix is in .npy format
+#         if not file.endswith('.npy'):
+#             print(f"ERROR: {file} is not in .npy format")
+#             continue
+#         # Check if the prediction matrix has the same size as the respective input image
+#         input_file = file
+#         if input_file in input_np_arrays:
+#             input_matrix = input_np_arrays[input_file]
+#             if pred_matrix.shape != input_matrix.shape:
+#                 print(f"ERROR: {file} does not match the size of the respective input image")
+        
+#         # Check if the prediction matrix only has values between 0 and 1 (inclusive)
+#         if not np.all((pred_matrix >= 0) & (pred_matrix <= 1)):
+#             print(f"ERROR: {file} contains values outside the range [0, 1]")
+        
+#         print(f"Sanity checks passed: {file}")
