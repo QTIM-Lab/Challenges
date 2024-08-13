@@ -39,35 +39,17 @@ for i, (ref_img, pred_img) in enumerate(zip(ref_img_list, pred_img_list)):
     ## CONVER REF TO PNG
     loaded_image_255 = np.array(Image.open(os.path.join(prediction_dir,  pred_img)))
     loaded_image_0_1 = loaded_image_255.astype(np.float32) / 255.0  # Convert back to float and scale to 0-1
-    del(loaded_image_255)
-    ref_np.shape
-    loaded_image_0_1.shape
     pred_np = loaded_image_0_1
-    # print(type(loaded_image_0_1))
-    # print(loaded_image_0_1.shape)
-    # pdb.set_trace()
-    # compare_arrays(pred_np, loaded_image_0_1)
-    ## CONVER REF TO PNG
-    ## Raw upscale check
-    ## SCORING PROGRAM
-    # pred_png = Image.open(os.path.join(utils, pred_img))
-    # pred_np = np.array(pred_png).astype(np.float32) / 255.0
-    ## SCORING PROGRAM
-    # Ensure the same shape for both reference and prediction arrays
-    # pdb.set_trace()
     assert ref_np.shape == pred_np.shape, f"Shape mismatch: {ref_np.shape} vs {pred_np.shape}"
     ref_binarized = np.where(ref_np > 0, 1, 0)
-    ref_binarized.shape
-    pred_np.shape
     ref_pmap_to_weights = np.where(ref_np == 0, 1,
                           np.where((ref_np == 1/3), 15,
                           np.where((ref_np == 2/3), 30,
                           np.where((ref_np == 1), 45, 1))))
-    # pdb.set_trace()
     wll = log_loss(ref_binarized.flatten(), pred_np.flatten(), sample_weight=ref_pmap_to_weights.flatten(), labels=[0,1])
     wll_list[pred_img] = wll
 
-# pdb.set_trace()
+
 # AUC_ROC
 try:
     ref_classifications = pd.read_csv(os.path.join(reference_dir,"image-level-classifications.csv"))
@@ -117,34 +99,3 @@ with open(os.path.join(score_dir, 'scores.html'), 'w') as html_file:
     html_file.write(f"Weighted Log Loss by Image:\n")
     html_file.write(json.dumps(detailed_scores, indent = 2))
 
-
-
-
-
-
-#### Appendix
-
-# function required by organizers to run as sanity checks to participants' pred matrices
-# def pred_matrices_sanity_checks(input_images_dir, output_dir):
-#     input_filenames = [f for f in os.listdir(input_images_dir) if f.endswith('.npy')]
-#     input_np_arrays = {f: np.load(os.path.join(input_images_dir, f)) for f in input_filenames}
-#     output_filenames = [f for f in os.listdir(output_dir) if f.endswith('.npy')]
-    
-#     for file in output_filenames:
-#         pred_matrix = np.load(os.path.join(output_dir, file))
-#         # Check if the prediction matrix is in .npy format
-#         if not file.endswith('.npy'):
-#             print(f"ERROR: {file} is not in .npy format")
-#             continue
-#         # Check if the prediction matrix has the same size as the respective input image
-#         input_file = file
-#         if input_file in input_np_arrays:
-#             input_matrix = input_np_arrays[input_file]
-#             if pred_matrix.shape != input_matrix.shape:
-#                 print(f"ERROR: {file} does not match the size of the respective input image")
-        
-#         # Check if the prediction matrix only has values between 0 and 1 (inclusive)
-#         if not np.all((pred_matrix >= 0) & (pred_matrix <= 1)):
-#             print(f"ERROR: {file} contains values outside the range [0, 1]")
-        
-#         print(f"Sanity checks passed: {file}")

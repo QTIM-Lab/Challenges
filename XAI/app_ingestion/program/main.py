@@ -57,7 +57,7 @@ def generate_pred_matrices(input_dir, output_dir, model):
             print(f"On image {i+1}: {input_filenames[i]}")
             prediction = np.random.rand(*array.shape)
             # Simulated pred matrices in PNG format
-            prediction_8_bit = np.round(prediction*255).astype(np.uint8)
+            prediction_8_bit = np.floor(prediction*255+0.5).astype(np.uint8)
             os.makedirs(output_dir, exist_ok=True)
             pil_image = Image.fromarray(prediction_8_bit, mode="L")
             pil_image.save(os.path.join(output_dir, input_filenames[i].replace(".dcm",".png")))

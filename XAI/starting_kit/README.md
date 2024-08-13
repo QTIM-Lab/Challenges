@@ -1,8 +1,9 @@
 # How to participate
 
-1. Build your own docker image and upload to our system or use our default one we provide. 
+1. Create your own Dockerfile (and related files for build), zip and upload to our system or use our default one we provide. 
   * You will have a drop down to select the docker image you want your code to run in.
   * This is a *.zip archive with a `Dockerfile` file at the **root** of the archive.
+  * Do not create entrypoints
 2. Upload another zip with your algorith inside it with `entrypoint.sh` in it. This shell script will be called by our platform with input argumentss:
   * /app/input_data/
   * /app/output/
