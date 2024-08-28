@@ -1,7 +1,7 @@
 # main.py
 #
 #   This file represents your code that does the inference (and should be
-# substituted with your own code).  The script itself takes four arguments,
+# substituted with your own code).  The script itself takes three arguments,
 # which are passed by your "entrypoint.sh", which in turn receives them from the
 # administrative wrapper "ingestion" script:
 #
@@ -37,9 +37,9 @@ import pydicom
 import pandas as pd
 import torch
 
-debug = False
 
 if torch.cuda.is_available():
+    print(f"GPU Available!")
     with torch.cuda.device(0):  # Sets device to GPU 0
         print("### Test Tensor ###")
         tensor = torch.tensor([1, 2, 3]).cuda()  # Creates tensor on GPU 0
@@ -50,23 +50,20 @@ if torch.cuda.is_available():
 # to generate their pred matrices in the output_dir
 def generate_pred_matrices(input_dir, output_dir, model):
     input_filenames = [f for f in os.listdir(input_dir) if f.endswith('.dcm')]
-    input_np_arrays = [pydicom.dcmread(os.path.join(input_dir, f)).pixel_array for f in input_filenames]
-    if debug == False:
+    # input_np_arrays = [pydicom.dcmread(os.path.join(input_dir, f)).pixel_array for f in input_filenames]
+    for i, f in enumerate(input_filenames):
+        array = pydicom.dcmread(os.path.join(input_dir, f)).pixel_array
         ### SIMULATE DATA GENERATION
-        for i, array in enumerate(input_np_arrays):
-            print(f"On image {i+1}: {input_filenames[i]}")
-            prediction = np.random.rand(*array.shape)
-            # Simulated pred matrices in PNG format
-            prediction_8_bit = np.floor(prediction*255+0.5).astype(np.uint8)
-            os.makedirs(output_dir, exist_ok=True)
-            pil_image = Image.fromarray(prediction_8_bit, mode="L")
-            pil_image.save(os.path.join(output_dir, input_filenames[i].replace(".dcm",".png")))
+        print(f"On image {i+1}: {input_filenames[i]}")
+        prediction = np.random.rand(*array.shape)
+        # Simulated pred matrices in PNG format
+        prediction_8_bit = np.floor(prediction*255+0.5).astype(np.uint8)
+        os.makedirs(output_dir, exist_ok=True)
+        pil_image = Image.fromarray(prediction_8_bit, mode="L")
+        pil_image.save(os.path.join(output_dir, input_filenames[i].replace(".dcm",".png")))
         prediction_scores = [np.random.rand(1)[0] for file in input_filenames]
         classifications = pd.DataFrame({"fileNamePath":input_filenames, "score":prediction_scores}) 
         classifications.to_csv(os.path.join(output_dir,"image-level-classifications.csv"), index=None)
-    ### DEBUG DATA GENERATION
-    else:
-        print("Using data you generated not with this program.")
 
 
 def main():

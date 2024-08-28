@@ -7,7 +7,7 @@
 # it, you should run your python (or other language) main script to perform
 # inference on the input images and generate your output.
 #
-#   This script will receive four arguments from the administrative wrapper
+#   This script will receive three arguments from the administrative wrapper
 # (ingestion) program:
 #
 # 1. input_data (also called "input_images_dir") - The path with the input DICOM

@@ -48,12 +48,12 @@ for i, (ref_img, pred_img) in enumerate(zip(ref_img_list, pred_img_list)):
                           np.where((ref_np == 1), 45, 1))))
     wll = log_loss(ref_binarized.flatten(), pred_np.flatten(), sample_weight=ref_pmap_to_weights.flatten(), labels=[0,1])
     wll_list[pred_img] = wll
-
+    # pdb.set_trace()
 
 # AUC_ROC
 try:
     ref_classifications = pd.read_csv(os.path.join(reference_dir,"image-level-classifications.csv"))
-except:
+except:      
     raise Exception("Can't find reference classifications")
 
 try:
@@ -72,19 +72,79 @@ except:
     raise Exception("Can't match up prediction file names with reference file names")
 
 try:
+    # pdb.set_trace()
     auc_roc = roc_auc_score(y_true, y_score)
 except:
     raise Exception("Can't compute auc_ROC for some reason")
 
+# Confidence intervals
+def confidence_interval_generation(y, x, confidence_interval_percent = 95):
+    ## Confidence Interval
+    n_bootstraps = 1000
+    rng_seed = 42  # control reproducibility
+    bootstrapped_scores = []
+    rng = np.random.RandomState(rng_seed)
+    for i in range(n_bootstraps):
+        # bootstrap by sampling with replacement on the prediction indices
+        indices = rng.randint(0, len(x), len(x))
+        if len(np.unique(y[indices])) < 2:
+            # We need at least one positive and one negative sample for ROC AUC
+            # to be defined: reject the sample
+            continue
+        # score = metrics.cohen_kappa_score(y[indices], x[indices], weights="quadratic")
+        score = roc_auc_score(y[indices], x[indices])
+        bootstrapped_scores.append(score)
+        # print("Bootstrap #{} ROC area: {:0.3f}".format(i + 1, score))
+    # plt.hist(bootstrapped_scores, bins=50)
+    # plt.title('Histogram of the bootstrapped ROC AUC scores')
+    sorted_scores = np.array(bootstrapped_scores)
+    sorted_scores.sort()
+    # Computing the lower and upper bound of the 90% confidence interval
+    # You can change the bounds percentiles to 0.025 and 0.975 to get
+    # a 95% confidence interval instead.
+    lower_percent = ((100-confidence_interval_percent)/2) / 100
+    higher_percent = (100-(100-confidence_interval_percent)/2) / 100
+    # pdb.set_trace()
+    confidence_lower = sorted_scores[int(lower_percent * len(sorted_scores))]
+    confidence_upper = sorted_scores[int(higher_percent * len(sorted_scores))]
+    confidence_interval = "95% Confidence interval for the auc_roc: [{:0.3f} - {:0.3}]".format(confidence_lower, confidence_upper)
+    # print(confidence_interval)
+    return confidence_interval
 
-# Aggregate results
+auc_roc_confidence_interval = confidence_interval_generation(y_true, y_score)
+## WLL
+wll_list_df = pd.DataFrame([(wll,wll_list[wll]) for wll in wll_list.keys()], columns=['fileNamePath', 'wll'])
+wll_list_df.sort_values('wll')
+rows = wll_list_df.shape[0]
+confidence_interval_percent = 95
+lower_percent = ((100-confidence_interval_percent)/2) / 100
+higher_percent = (100-(100-confidence_interval_percent)/2) / 100
+confidence_lower = wll_list_df['wll'][int(lower_percent * rows)]
+confidence_upper = wll_list_df['wll'][int(higher_percent * rows)]
+confidence_95 = wll_list_df['wll'][int(lower_percent * rows):int(higher_percent * rows)]
 
+import scipy
+from scipy.stats import ttest_1samp
+values = list(wll_list.values())
+m = np.mean(values)
+ttest = ttest_1samp(values, popmean=m)
+# dir(ttest)
+# ttest.confidence_interval()
+# ttest.confidence_interval().low
+# ttest.confidence_interval().high
+# pdb.set_trace()
+
+average_wll_95 = confidence_95.mean()
 average_wll = np.mean(list(wll_list.values()))
 
-print(f'Average Weighted Log Loss: {average_wll}')
-print(f'AUC ROC: {auc_roc}')
+## AUC_ROC
 
-print('Scores:')
+
+print(f'Average Weighted Log Loss: {average_wll}')
+print(f'Average Weighted Log Loss 95% Confidence Interval: {average_wll_95}')
+print(f'AUC ROC: {auc_roc}')
+print(f'{auc_roc_confidence_interval}')
+
 scores = {
     'average_wll': average_wll,
     'auc_roc': auc_roc
@@ -96,6 +156,14 @@ detailed_scores = wll_list
 with open(os.path.join(score_dir, 'scores.json'), 'w') as score_file:
     score_file.write(json.dumps(scores))
 with open(os.path.join(score_dir, 'scores.html'), 'w') as html_file:
-    html_file.write(f"Weighted Log Loss by Image:\n")
-    html_file.write(json.dumps(detailed_scores, indent = 2))
+    html_file.write(f'<p>Average Weighted Log Loss: {average_wll}</p>\n')
+    html_file.write(f'<p>Average Weighted Log Loss 95% Confidence Interval: {average_wll_95}</p>\n')
+    html_file.write(f'<p>AUC ROC: {auc_roc}</p>\n')
+    html_file.write(f'<p>{auc_roc_confidence_interval}</p>\n\n')
+    html_file.write(f'<p>------------------------------------------------</p>\n')
+
+    html_file.write(f"<p>Weighted Log Loss by Image:</p>\n")
+    for key in detailed_scores:
+        html_file.write(f"<p>{key} | {detailed_scores[key]}</p>\n")
+
 

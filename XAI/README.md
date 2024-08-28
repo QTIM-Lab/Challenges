@@ -22,11 +22,6 @@ zip -r xai_code_submission_template_bundle.zip ./*
 cp $ROOT/xai_code_submission_template_bundle.zip $DATA/
 ```
 
-## Backup Utils
-```bash
-cp -r /sddata/projects/Challenges/XAI/utils $DATA/training_practice/
-```
-
 
 
 ## Create Datasets
@@ -35,7 +30,7 @@ Needed to make changes outside bundle upload
 ### Docker Image
 ```bash
 zip -j sample_docker_image.zip $ROOT/sample_docker_image/!(.gitkeep)
-cp sample_docker_image.zip $DATA/training_practice/
+cp sample_docker_image.zip $DATA/
 ```
 
 ### Public Data
@@ -56,7 +51,7 @@ cp ingestion_program.zip $DATA/training_practice/
 zip -j sample_solution_xai.zip $ROOT/app_ingestion/program/entrypoint.sh
 zip -j sample_solution_xai.zip $ROOT/app_ingestion/program/main.py
 zip -j sample_solution_xai.zip $ROOT/app_ingestion/program/pneumonia.pt
-cp sample_solution_xai.zip $DATA/training_practice/
+cp sample_solution_xai.zip $DATA/
 ```
 
 ### Scoring Program
@@ -68,14 +63,20 @@ cp scoring_program.zip $DATA/training_practice/
 
 ### Input Data
 ```bash
+PHASE=training_practice
+PHASE=validation_phase
+PHASE=test_phase
 zip -j input_data.zip $ROOT/app_ingestion/input_data/!(.gitkeep)
-cp input_data.zip $DATA/training_practice/
+cp input_data.zip $DATA/$PHASE/
 ```
 
 ### Reference Data
 ```bash
+PHASE=training_practice
+PHASE=validation_phase
+PHASE=test_phase
 zip -j ref_data.zip $ROOT/app_scoring/input/ref/!(.gitkeep)
-cp ref_data.zip $DATA/training_practice/
+cp ref_data.zip $DATA/$PHASE/
 ```
 
 ### Starting Kit
@@ -87,6 +88,7 @@ cp $ROOT/app_ingestion/program/pneumonia.pt ./starting_kit/app_ingestion/program
 cp $ROOT/app_scoring/program/metadata.yaml ./starting_kit/app_scoring/program/
 cp $ROOT/app_scoring/program/scoring.py ./starting_kit/app_scoring/program/
 cp -r $ROOT/sample_docker_image ./starting_kit/
+# cp $ROOT/sample_solution_xai.zip ./starting_kit/
 zip -r starting_kit.zip starting_kit/!(.gitkeep)
 cp starting_kit.zip $DATA/training_practice/
 ```
