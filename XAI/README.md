@@ -50,14 +50,19 @@ cp ingestion_program.zip $DATA/training_practice/
 zip -j sample_solution_xai.zip $ROOT/app_ingestion/program/entrypoint.sh
 zip -j sample_solution_xai.zip $ROOT/app_ingestion/program/main.py
 zip -j sample_solution_xai.zip $ROOT/app_ingestion/program/pneumonia.pt
+# Test phase
+zip -j sample_solution_xai.zip $ROOT/app_ingestion/program/Fake_Algorithm_Description.docx
 cp sample_solution_xai.zip $DATA/
 ```
 
 ### Scoring Program
 ```bash
+PHASE=training_practice
+PHASE=validation_phase
+PHASE=test_phase
 zip -j scoring_program.zip $ROOT/app_scoring/program/scoring.py
 zip -j scoring_program.zip $ROOT/app_scoring/program/metadata.yaml
-cp scoring_program.zip $DATA/training_practice/
+cp scoring_program.zip $DATA/$PHASE/
 ```
 
 ### Input Data
@@ -136,15 +141,22 @@ rm -r $ROOT/public_data/!(.gitkeep) # leave
 
 ### ingestion_input_data
 ```bash
-cp -r $DATA/training_practice/input_data/* $ROOT/app_ingestion/input_data/
+PHASE=training_practice
+PHASE=validation_phase
+PHASE=test_phase
+cp -r $DATA/$PHASE/input_data/* $ROOT/app_ingestion/input_data/
 ```
 
 ### scoring_reference_data
 ```bash
-cp -r $DATA/training_practice/reference_data/* $ROOT/app_scoring/input/ref/
+PHASE=training_practice
+PHASE=validation_phase
+PHASE=test_phase
+cp -r $DATA/$PHASE/ref_data/* $ROOT/app_scoring/input/ref/
 ```
 
 ### public_data
 ```bash
-cp -r $DATA/training_practice/public_data/* $ROOT/public_data/
+PHASE=training_practice
+cp -r $DATA/$PHASE/public_data/* $ROOT/public_data/
 ```

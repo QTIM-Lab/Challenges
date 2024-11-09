@@ -10,5 +10,7 @@ RUN pip install python-gdcm;
 RUN pip install pandas;
 RUN pip install scikit-learn;
 RUN pip install opencv-python;
+RUN pip install pdfplumber;
+RUN pip install python-docx;
 
 # CMD ["echo", "Test"]

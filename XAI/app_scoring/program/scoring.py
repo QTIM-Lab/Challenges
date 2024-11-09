@@ -5,6 +5,9 @@ import sys
 import numpy as np
 from sklearn.metrics import log_loss, roc_auc_score
 import pandas as pd
+import pdfplumber
+from docx import Document
+import re
 from PIL import Image
 import cv2
 
@@ -15,9 +18,49 @@ print('Reading prediction')
 
 ref_img_list = [i for i in os.listdir(reference_dir) if i.find(".npy") != -1]
 pred_img_list = [i for i in os.listdir(prediction_dir) if i.find(".png") != -1]
+algorithm_file = [i for i in os.listdir(prediction_dir) if i.find(".pdf") != -1 or i.find(".docx") != -1 or i.find(".txt") != -1]
+
+PHASE = 'test'
+# PHASE = 'val'
 
 ref_img_list.sort()
 pred_img_list.sort()
+
+def count_words_in_pdf(pdf_path):
+    word_count = 0
+    with pdfplumber.open(pdf_path) as pdf:
+        for page in pdf.pages:
+            text = page.extract_text()
+            # pdb.set_trace()
+            if text:
+                # Remove non-alphabetical characters and split into words
+                words = re.findall(r'\b\w+\b', text)
+                word_count += len(words)
+    return word_count
+
+
+def count_words_in_docx(docx_path):
+    word_count = 0
+    doc = Document(docx_path)
+    for paragraph in doc.paragraphs:
+        text = paragraph.text
+        # Remove non-alphabetical characters and split into words
+        words = re.findall(r'\b\w+\b', text)
+        # pdb.set_trace()
+        word_count += len(words)
+    return word_count
+
+
+def count_words_in_txt(txt_path):
+    word_count = 0
+    with open(txt_path, 'r', encoding='utf-8') as file:
+        for line in file:
+            # Remove non-alphabetical characters and split into words
+            words = re.findall(r'\b\w+\b', line)
+            # pdb.set_trace()
+            word_count += len(words)
+    return word_count
+
 
 def upsample_saliency_map(saliency_map, gt_mask, interpolation=cv2.INTER_CUBIC):
     target_size = gt_mask.shape[:2][::-1]
@@ -28,6 +71,41 @@ def upsample_saliency_map(saliency_map, gt_mask, interpolation=cv2.INTER_CUBIC):
         saliency_map, target_size, interpolation=interpolation
     )
     return upsampled_saliency_map
+
+
+if PHASE == 'test':
+    # Testing
+    # file_path = os.path.join(prediction_dir, 'Fake_Algorithm_Description.pdf')
+    # file_path = os.path.join(prediction_dir, 'Fake_Algorithm_Description.docx')
+    # file_path = os.path.join(prediction_dir, 'Fake_Algorithm_Description.txt')
+
+    if len(algorithm_file) == 0:
+        raise Exception(f"You need 1 file with extension 'pdf','docx' or 'txt' that has your algorithm description. Minimum of 250 words required.")
+
+    if len(algorithm_file) > 1:
+        raise Exception(f"You have more than 1 file with extension ['pdf','docx','txt'] and we can only have 1. If you have readme files please make sure they don't have the same extention as one of those 3. I recommend .md for readme files. We use the presence of those extensions to identify which file is the algorithm description.")
+
+    file_path = os.path.join(prediction_dir, algorithm_file[0])
+
+    if file_path.find(".pdf") != -1:
+        count_func = count_words_in_pdf
+    elif file_path.find(".docx") != -1:
+        count_func = count_words_in_docx
+    elif file_path.find(".txt") != -1:
+        count_func = count_words_in_txt
+    else:
+        raise Exception("Can't find a .pdf, .docx and .txt")
+
+
+    total_words = count_func(file_path)
+    pdb.set_trace()
+    if total_words < 250:
+        raise Exception(f"Total words less than 250 and we need more detail than that.")
+    # elif total_words > 475:
+    #     raise Exception(f"Total words more than 475 and we really want between 250 and 475.")
+
+    print(f"We got your algorithm description and we see the total words in the PDF are: {total_words}.")
+    
 
 
 # Weighted Log Loss
@@ -138,12 +216,10 @@ average_wll_95 = confidence_95.mean()
 average_wll = np.mean(list(wll_list.values()))
 
 ## AUC_ROC
-
-
-print(f'Average Weighted Log Loss: {average_wll}')
-print(f'Average Weighted Log Loss 95% Confidence Interval: {average_wll_95}')
-print(f'AUC ROC: {auc_roc}')
-print(f'{auc_roc_confidence_interval}')
+# print(f'Average Weighted Log Loss: {average_wll}')
+# print(f'Average Weighted Log Loss 95% Confidence Interval: {average_wll_95}')
+# print(f'AUC ROC: {auc_roc}')
+# print(f'{auc_roc_confidence_interval}')
 
 scores = {
     'average_wll': average_wll,

@@ -35,6 +35,7 @@ from PIL import Image
 import numpy as np
 import pydicom
 import pandas as pd
+import shutil
 import torch
 
 
@@ -80,7 +81,17 @@ def main():
     # access your model or other parts of your submission
     model = os.path.join(submission_dir, 'pneumonia.pt')
 
-    generate_pred_matrices(input_dir, output_dir, model)
+    # generate_pred_matrices(input_dir, output_dir, model)
+
+    # Source file path
+    source = os.path.join(submission_dir, "Fake_Algorithm_Description.docx")
+
+    # Destination file path
+    destination = os.path.join(output_dir, "Fake_Algorithm_Description.docx")
+    pdb.set_trace
+    # Copy the file
+    shutil.copy(source, destination)
+
 
 
 if __name__ == '__main__':
