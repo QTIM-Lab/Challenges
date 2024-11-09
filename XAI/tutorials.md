@@ -10,7 +10,11 @@
   * [https://www.youtube.com/watch?v=jtBVppyfDbE](https://www.youtube.com/watch?v=jtBVppyfDbE)
 
 ### Practice with the Demo: 
-1.[Needs new content!]
+1. [Intro and How to Submit](https://youtu.be/FelUeK8sXKU)
+2. [Build Docker](https://youtu.be/xgsmjxYaXUQ))
+3. [Inngestion and Scoring](https://youtu.be/HCI_CnXYwMw)
+4. [main.py indepth](https://youtu.be/ytVZ49yDQfM)
+
 
 ### Downloading Data and Cohort Building at data.midrc.org 
   * [General YouTube video on cohort building within MIDRC ](https://www.youtube.com/watch?v=MuE8pJYM7Qo&list=PLNgcb2GesE0itCpCeydBsiuOqgsfUfp0P)
