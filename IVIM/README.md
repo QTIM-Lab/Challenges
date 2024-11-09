@@ -66,6 +66,10 @@ zip -r reference_"$PHASE"_data.zip ./*; mv reference_"$PHASE"_data.zip $DATA/;
 cd $ROOT
 # To clean
 rm -r $ROOT/submission_directory/input/ref/!(.gitkeep) # leave .gitkeep so we can keep this in git
+
+# Don't need this anymore but keeping around for challenge duration just in case:
+## $DATA/archive/reference_data
+## $DATA/archive/public_data
 ```
 
 ## Public Data
@@ -118,6 +122,7 @@ cd $ROOT
 DATA=/sddata/data/Challenges/IVIM
 # Which phase
 PHASE=val
+PHASE=test
 # Extract raw data
 unzip $DATA/scoring_"$PHASE"_program.zip -d $ROOT/submission_directory/program/
 # Re-compress
