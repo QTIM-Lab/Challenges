@@ -1,5 +1,5 @@
 [tool.poetry]
-name = "nils-benchmark-code-v1"
+name = "CT-MAR"
 version = "0.1.0"
 description = ""
 authors = ["Benjamin Bearce <bbearce@gmail.com>"]

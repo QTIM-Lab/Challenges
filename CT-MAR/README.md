@@ -25,19 +25,21 @@ This is the structure the compute worker sees while running and the universe you
 
 > In each section there is a place where we copy the ref data, submission or program to the submission_directory
 
-## Ground Truth
+## Ground Truth, ref
 Retrieve from `$DATA`.
 ```bash
 ROOT=/sddata/projects/Challenges/CT-MAR
 cd $ROOT
 DATA=/sddata/data/Challenges/CT-MAR
 # Which phase
-PHASE=val
+# PHASE=val
+PHASE=test
 # Extract raw data
 unzip $DATA/reference_"$PHASE"_data.zip -d $ROOT/submission_directory/input/ref
 # Re-compress
 cd $ROOT/submission_directory/input/ref
-zip -r reference_"$PHASE"_data.zip ./*; mv reference_"$PHASE"_data.zip $DATA/;
+zip -r reference_"$PHASE"_data.zip ./*; 
+mv reference_"$PHASE"_data.zip $DATA/;
 cd $ROOT
 # To clean
 rm -r $ROOT/submission_directory/input/ref/!(.gitkeep) # leave .gitkeep so we can keep this in git
@@ -51,8 +53,8 @@ PHASE=val
 # Extract raw data
 unzip $DATA/public_"$PHASE"_data.zip -d $DATA/public_"$PHASE"_data
 # Re-compress
-cd $DATA/public_"$PHASE"_data
-zip -r public_"$PHASE"_data.zip ./*; mv public_"$PHASE"_data.zip $DATA/; cd $ROOT
+cd $DATA/public_"$PHASE"_data_1
+zip -r public_"$PHASE"_data_1.zip ./*; mv public_"$PHASE"_data_1.zip $DATA/; cd $ROOT
 # Clean up
 rm -r $DATA/public_"$PHASE"_data/
 ```
@@ -65,14 +67,20 @@ cd $ROOT
 DATA=/sddata/data/Challenges/CT-MAR
 # Which phase
 PHASE=val
+PHASE=test
 # Extract raw data
 unzip $DATA/"$PHASE"_scoring_program.zip -d $ROOT/submission_directory/program/
 # Re-compress
 cd $ROOT/submission_directory/program
-zip -r "$PHASE"_scoring_program.zip ./*; mv "$PHASE"_scoring_program.zip $DATA/;
+zip -r "$PHASE"_scoring_program.zip ./*; 
+mv "$PHASE"_scoring_program.zip $DATA/;
 cd $ROOT
 # Clean up
 rm -r $ROOT/submission_directory/program/!(.gitkeep) # leave .gitkeep so we can keep this in git
+
+# if you just want to zip current /projects/Challenges/program/* to 'val_scoring_program.zip'
+# inside /projects/Challenges/program/:
+
 ```
 
 ## Starting Kit
@@ -92,7 +100,7 @@ zip -r "$PHASE"_starting_kit.zip ./*; mv "$PHASE"_starting_kit.zip $DATA/; cd $R
 rm -r $DATA/"$PHASE"_starting_kit/
 ```
 
-## Sample Submissions
+## Sample Submissions, sample res
 Retrieve from `$DATA`.
 ```bash
 # Which phase
@@ -101,7 +109,8 @@ PHASE=val
 unzip $DATA/sample_"$PHASE"_submission.zip -d $ROOT/submission_directory/input/res/
 # Re-compress
 cd $ROOT/submission_directory/input/res/
-zip -r sample_"$PHASE"_submission.zip ./*; mv sample_"$PHASE"_submission.zip $DATA/; 
+zip -r sample_"$PHASE"_submission.zip ./*; 
+mv sample_"$PHASE"_submission.zip $DATA/; 
 cd $ROOT
 # Clean up
 rm -r $ROOT/submission_directory/input/res/!(.gitkeep) # leave .gitkeep so we can keep this in git
